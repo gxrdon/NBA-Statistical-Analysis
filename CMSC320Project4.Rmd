@@ -1,0 +1,37 @@
+---
+title: "Project 4"
+author: "Andrew Gordon"
+date: "May 2, 2019"
+output: html_document
+---
+
+```{r, message=FALSE, warning=FALSE}
+
+library(tidyverse)
+library(stringr)
+library(leaflet)
+
+arrest_tab <- read_csv("http://www.hcbravo.org/IntroDataSci/misc/BPD_Arrests.csv")
+data <- arrest_tab %>% 
+  filter(!is.na(`Location 1`)) %>%
+  separate(`Location 1`, c("lat","lng"), sep=",") %>%
+  mutate(lat=as.numeric(str_replace(lat, "\\(", ""))) %>%
+  mutate(lng=as.numeric(str_replace(lng, "\\)", ""))) %>%
+  sample_n(2000)
+
+```
+
+```{r, message=FALSE, warning=FALSE}
+
+colour <- colorFactor(c("pink", "blue"), domain = c("F", "M"))
+
+map_of_baltimore <- leaflet(data) %>%
+  addTiles() %>%
+  addCircleMarkers(radius = 2, color = ~ifelse(sex == "M", "blue", "red"), fillOpacity = 1) %>%
+  addCircleMarkers(radius = ~ifelse(age <= 16, 8, 0), color = "black", stroke = FALSE, fillOpacity = ~ifelse(age <= 16, 1, 0)) %>%
+  addCircleMarkers(radius = ~ifelse(age > 65, 8, 0), color = "white", stroke = FALSE, fillOpacity = ~ifelse(age > 65, 1, 0)) %>%
+  setView(lat=39.29, lng=-76.61, zoom=11)
+
+map_of_baltimore
+
+```
