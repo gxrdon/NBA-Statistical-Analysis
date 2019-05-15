@@ -73,3 +73,4 @@ NBAStats %>%
   geom_boxplot()
 ```
 
+Now we're going to move on to the next part of the data science pipeline: hypothesis testing. In this section, we'll make a prediction such as guards tend to score more points and then we will set up a linear model and test whether or not this is true. 
