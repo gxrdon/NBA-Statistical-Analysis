@@ -1,4 +1,4 @@
-# NBA-Statistical-Analysis
+#Statistical Analysis of the NBA 2014-15 Season
 
 
 We chose to conduct an analysis on NBA statistics from the 2014/15 season. In this tutorial, we will tidy and parse our data so that we can further analyze it. After that, we will test our hypotheses. Finally, we will use machine learning to predict the MVP for this season and future successes in the NBA. 
