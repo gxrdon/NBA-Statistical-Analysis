@@ -16,13 +16,46 @@ Now that we have the table that we need to analyze, it's time to tidy it. This m
 
 We can clean out table by simply using the mutate function with conditional statements inside of it to create a new table. A conditional statement refers to a querry that checks if the current entity fulfills a certain trait. For example, if the current player's position isn't listed, set them to "NA". Otherwise, keep it the same. In the case of the table that we're working with, the data is already tidied, however we will still provide an example of how this works. 
 
-In this example, we are looking for players whose position is unspecified and changing it to NA. To display the results of this call, I select the name and position column and then slice a chunk of players that fall into this condition so you can see how it works. 
+In this example, we are looking for players whose position, age and team are unspecified and changing them to NA. To display the results of this call, we select the name, age, position and team columns and then slice a chunk of players that fit the missing data we talked about so you can see how it works. 
 
 ```{r}
 NBAStats <- NBAStats %>%
-  mutate(Pos = ifelse(Pos == ' ', NA, Pos))
+  mutate(Birth_Place = ifelse(Birth_Place == ' ', NA, Birth_Place)) %>%
+  mutate(Age = ifelse(Age == ' ', NA, Age)) %>%
+  mutate(Team = ifelse(Team == ' ', NA, Team))
 
-NBAStats %>% select(1, 31) %>% slice(10:20)
+NBAStats %>% select(1, 25, 31, 32) %>% slice(25:35)
 ```
 
 The "%>%" above is an operation that allows the user to send a dataset into the first parameter of the next function. For example, imagine if you had a function add() that takes a dataframe and an integer. You can either do add(dataframe, integer) or you can do dataframe %>% add(integer) which will have the same effect. In the long run, using dplyr pipelines (%>%) will save a lot of space and confusion. 
+
+Now that the data is cleaned, we can begin to use this cleaned data to make graphs that allows us to see statistics such as central tendency, correlations between variables, skew in the data, and much more! 
+
+In the following graph, we use ggplot() to create a scatter plot of all player's scoring stats based on the number of minutes they played this season. We expect there to be a correlation here. 
+
+```{r}
+NBAStats %>% ggplot(aes(x=MIN, y=PTS)) +
+  geom_point()
+```
+This gives us an idea of the correlation between minutes played and points per season, but we can do better. Let's now add a regression line to make the trend more clear.
+
+```{r}
+NBAStats %>% ggplot(aes(x=MIN, y=PTS)) + 
+  geom_point() + 
+  geom_smooth(method=lm)
+```
+
+Lastly, we can color these points based on the team that their on. Since the Golden State Warriors won this season, let's color them based on whether or not they're on Golden State (GSW). We first create a new column and initialize all the entities value for that to false. After that, we use a simple loop to populate the new column with true if they're on the Warriors and false otherwise. We also have the players whose teams were unknown and they get their own color. 
+
+As you can see from this graph, Golden State has some of the best scorers per minutes played in the league. On the contrary, they also have some of the worst scorers per minutes played (perhaps they're defensive players).
+
+```{r}
+(NBAStats$isGSW = FALSE)
+
+for(i in 1:490){
+  NBAStats[i, "isGSW"] <- ifelse(NBAStats[i, "Team"] == 'GSW', TRUE, FALSE)
+}
+
+NBAStats %>% ggplot(aes(x=MIN, y=PTS, color=isGSW)) + 
+  geom_point() 
+```
