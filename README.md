@@ -24,7 +24,9 @@ NBAStats <- NBAStats %>%
   mutate(Age = ifelse(Age == ' ', NA, Age)) %>%
   mutate(Team = ifelse(Team == ' ', NA, Team))
 
-NBAStats %>% select(1, 25, 31, 32) %>% slice(25:35)
+NBAStats %>% 
+  select(1, 25, 31, 32) %>% 
+   slice(25:35)
 ```
 
 The "%>%" above is an operation that allows the user to send a dataset into the first parameter of the next function. For example, imagine if you had a function add() that takes a dataframe and an integer. You can either do add(dataframe, integer) or you can do dataframe %>% add(integer) which will have the same effect. In the long run, using dplyr pipelines (%>%) will save a lot of space and confusion. 
@@ -34,13 +36,15 @@ Now that the data is cleaned, we can begin to use this cleaned data to make grap
 In the following graph, we use ggplot() to create a scatter plot of all player's scoring stats based on the number of minutes they played this season. We expect there to be a correlation here. 
 
 ```{r}
-NBAStats %>% ggplot(aes(x=MIN, y=PTS)) +
+NBAStats %>% 
+  ggplot(aes(x=MIN, y=PTS)) +
   geom_point()
 ```
 This gives us an idea of the correlation between minutes played and points per season, but we can do better. Let's now add a regression line to make the trend more clear.
 
 ```{r}
-NBAStats %>% ggplot(aes(x=MIN, y=PTS)) + 
+NBAStats %>% 
+  ggplot(aes(x=MIN, y=PTS)) + 
   geom_point() + 
   geom_smooth(method=lm)
 ```
@@ -56,6 +60,16 @@ for(i in 1:490){
   NBAStats[i, "isGSW"] <- ifelse(NBAStats[i, "Team"] == 'GSW', TRUE, FALSE)
 }
 
-NBAStats %>% ggplot(aes(x=MIN, y=PTS, color=isGSW)) + 
+NBAStats %>% 
+  ggplot(aes(x=MIN, y=PTS, color=isGSW)) + 
   geom_point() 
 ```
+
+Lastly, we can also create plots based on categorical variables on the x and numerical values on the y such as the following. In this graph, we create a boxplot to show the correlation between position and rebounds per season. As expected, centers tend to grab the most rebounds while guards tend to not get as many.
+
+```{r}
+NBAStats %>% 
+  ggplot(aes(x=Pos, y=REB)) + 
+  geom_boxplot()
+```
+
