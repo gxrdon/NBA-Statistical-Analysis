@@ -1,6 +1,0 @@
-```{r}
-library(readxl)
-library(tidyverse)
-path <- "C:/Users/Andrew/Documents/NBAStatisticalAnalysis/players_stats.xlsx"
-NBAStats <- read_excel(path)
-```
