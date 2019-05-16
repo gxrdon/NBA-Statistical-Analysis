@@ -86,3 +86,34 @@ NBAStats %>%
 ```
 
 Now we're going to move on to the next part of the data science pipeline: hypothesis testing. In this section, we'll make a prediction such as guards tend to score more points and then we will set up a linear model and test whether or not this is true. 
+
+In the first part, we create a linear model of the relationship between points scored and minutes played in a season. The result gives us two values for the formula B0 + B1X where X represents the number of minutes played, -72.85 is the starting interecept and then .4733 is the amount of points that a players scores on average per minute. 
+
+We can already tell that this isn't a very strong correlation by doing some simple math. Say a player only had 10 minutes of gametime during a season. When plugging that in, we get -72.85 + (.4733*10) = -68.5, basically saying that the average player that plays 10 minutes a season scores -68 points a season which doesn't make any sense. 
+
+```{r}
+correlation <- lm(PTS~MIN, data=NBAStats) 
+
+correlation
+```
+
+Now we will begin to look at regression statistics and see how they match up. By calling head() on our linear model, it gives us all of the details, most importantly the fitted values, points and minutes. We can see that for low points and minutes, the fitted value is underestimated. On the contrary, for low points and high minutes, the fitted value is extremely overestimated. This alone shows the lack of a correlation, but let's go one step further. 
+
+```{r}
+corr_regress <- correlation %>% augment()
+
+corr_regress %>% head()
+```
+
+The last thing we'll do here is plot the residuals against the fitted values. If there is a strong correlation, we expect that the line of regression is a horizontal line at 0. In this case, it starts above 0, curves and sits around 0 for a little bit and then takes a large upturn away from 0. We can now say for sure that there isn't a great correlation between points and minutes played. 
+
+```{r}
+corr_regress %>%
+  ggplot(aes(x=.fitted, y=.resid)) +
+    geom_point() +
+    geom_smooth() +
+    labs(title="Residuals over time",
+         x = "fitted",
+         y = "residual")
+```
+
