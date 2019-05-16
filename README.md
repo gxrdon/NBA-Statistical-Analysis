@@ -1,8 +1,6 @@
 # Statistical Analysis of the NBA 2014-15 Season
 
 
-# 
-
 We chose to conduct an analysis on NBA statistics from the 2014/15 season. In this tutorial, we will tidy and parse our data so that we can further analyze it. After that, we will test our hypotheses. Finally, we will use machine learning to predict the MVP for this season and future successes in the NBA. 
 
 To begin, we first need to get the data that we want to analyze. The dataframe that we will be pulling from can be found at https://www.kaggle.com/drgilermo/nba-players-stats-20142015/. The first step is to specify any libraries you may need and then get the path of the file that you want to use. For this case, the table is located under our "NBAStatisticalAnalysis" folder on my local C drive. Since the data we want to use is coming from an Excel Spreadsheet, we use the "readxl" library to read the excel file and create a table out of it. The "<-" syntax simply stores the resulting data as a variable so we now have NBAStats which is the table we will be working with for the remainder of this tutorial.
