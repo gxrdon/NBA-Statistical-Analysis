@@ -43,6 +43,14 @@ NBAStats %>%
 
 The "%>%" above is an operation that allows the user to send a dataset into the first parameter of the next function. For example, imagine if you had a function add() that takes a dataframe and an integer. You can either do add(dataframe, integer) or you can do dataframe %>% add(integer) which will have the same effect. In the long run, using dplyr pipelines (%>%) will save a lot of space and confusion. 
 
+Lastly, let's remove any players that have less than 50 minutes played per season due to injuries or something else. They may skew our data later on. We can simply use the filter() function to specify the entities that have more than 50 minutes in this season. 
+
+```{r}
+NBAStats <- NBAStats %>% filter(MIN > 50)
+
+NBAStats
+```
+
 Now that the data is cleaned, we can begin to use this cleaned data to make graphs that allows us to see statistics such as central tendency, correlations between variables, skew in the data, and much more! 
 
 In the following graph, we use ggplot() to create a scatter plot of all player's scoring stats based on the number of minutes they played this season. We expect there to be a correlation here. 
