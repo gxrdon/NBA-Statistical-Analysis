@@ -18,6 +18,8 @@ Now that we have the table that we need to analyze, it's time to tidy it. This m
 
 We can clean out table by simply using the mutate function with conditional statements inside of it to create a new table. A conditional statement refers to a querry that checks if the current entity fulfills a certain trait. For example, if the current player's position isn't listed, set them to "NA". Otherwise, keep it the same. In the table we're working with, it seems like there are multiple different attributes that are missing for some players so we will utilize the functionality discussed above to touch these areas up in the next step. 
 
+Another way to clean up data is to change column names. Currently, our table has some column names with "%" and numbers in them. This will cause problems later on so it's important to change it now. The second chunk of code below is selecting the targeted column and setting it's name to the name that we selected. Now, we won't have issues with any of our column names down the line. 
+
 In this example, we are looking for players whose position, age, team, etc. are unspecified and changing them to NA. To display the results of this call, we use the select function which takes a dataset and then the columns you want to display. We then use a pipeline (explained later) to send the result of that into a slice. A slice does the same thing that select does but for entities instead.
 
 ```{r}
@@ -27,6 +29,12 @@ NBAStats <- NBAStats %>%
   mutate(Team = ifelse(Team == ' ', NA, Team)) %>%
   mutate(Weight = ifelse(Weight == ' ', NA, Weight)) %>%
   mutate(Height = ifelse(Height == ' ', NA, Height)) 
+
+colnames(NBAStats)[colnames(NBAStats)=="FT%"] <- "FTP"
+colnames(NBAStats)[colnames(NBAStats)=="3PM"] <- "TPM"
+colnames(NBAStats)[colnames(NBAStats)=="FG%"] <- "FGP"
+colnames(NBAStats)[colnames(NBAStats)=="3P%"] <- "TPP"
+colnames(NBAStats)[colnames(NBAStats)=="3PA"] <- "TPA"
 
 NBAStats %>% 
   select(1, 25, 31, 32) %>% 
