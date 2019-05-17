@@ -86,10 +86,16 @@ NBAStats %>%
 Lastly, we can also create plots based on categorical variables on the x and numerical values on the y such as the following. In this graph, we create a boxplot to show the correlation between position and rebounds per season. As expected, centers tend to grab the most rebounds while guards tend to not get as many.
 
 ```{r}
-NBAStats %>% 
-  ggplot(aes(x=Pos, y=REB)) + 
-  geom_boxplot()
+correlation <- lm(REB~Pos, data=NBAStats)
+
+
+broom::augment(correlation) %>%
+  ggplot(aes(x=Pos, y=REB, fill=Pos)) +
+    geom_boxplot() 
+
+correlation
 ```
+As shown by correlation, the average center gets the most rebounds. Since each variable that relates to the other positions are negative. This essentially says, if you are a PG, you are expected to get 377 - 233 rebounds.
 
 Now we're going to move on to the next part of the data science pipeline: hypothesis testing. In this section, we'll make a prediction such as guards tend to score more points and then we will set up a linear model and test whether or not this is true. 
 
