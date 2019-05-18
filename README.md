@@ -1,8 +1,6 @@
 ---
-title: "NBA Statistic Analysis"
-author: "Andrew Gordon & Mihcael Donahue"
+authors: "Andrew Gordon & Michael Donahue"
 date: "May 14, 2019"
-output: html_document
 ---
 
 ## Statistical Analysis of the 2014-15 NBA Season
