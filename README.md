@@ -1,6 +1,6 @@
 ---
-authors: "Andrew Gordon & Michael Donahue"
-date: "May 14, 2019"
+Author: "Andrew Gordon & Michael Donahue"
+Date: "May 14, 2019"
 ---
 
 ## Statistical Analysis of the 2014-15 NBA Season
@@ -9,7 +9,7 @@ We chose to conduct an analysis on NBA statistics from the 2014/15 season to tra
 
 To begin, we first need to get the data that we want to analyze. The dataframe that we will be pulling from can be found at https://www.kaggle.com/drgilermo/nba-players-stats-20142015/. The first step is to specify any libraries you may need and then get the path of the file that you want to use. For this case, the table is located under our "NBAStatisticalAnalysis" folder on my local C drive. Since the data we want to use is coming from an Excel Spreadsheet, we use the "readxl" library to read the excel file and create a table out of it. The "<-" syntax simply stores the resulting data as a variable so we now have NBAStats which is the table we will be working with for the remainder of this tutorial.
 
-```{r setup}
+```{r setup, warning = FALSE, message = FALSE}
 library(readxl)
 library(broom)
 library(tidyverse)
@@ -63,6 +63,7 @@ NBAStats %>%
   ggplot(aes(x=MIN, y=PTS)) +
   geom_point()
 ```
+
 This gives us an idea of the correlation between minutes played and points per season, but we can do better. Let's now add a regression line to make the trend more clear.
 
 ```{r, warning = FALSE, message = FALSE}
@@ -72,9 +73,9 @@ NBAStats %>%
   geom_smooth(method=lm)
 ```
 
-#Lastly, we can color these points based on the team that their on. Since the Golden State Warriors won this season, let's color them based on whether or not they're on Golden State (GSW). We first create a new column and initialize all the entities value for that to false. After that, we use a simple loop to populate the new column with true if they're on the Warriors and false otherwise. We also have the players whose teams were unknown and they get their own color. 
+Lastly, we can color these points based on the team that their on. Since the Golden State Warriors won this season, let's color them based on whether or not they're on Golden State (GSW). We first create a new column and initialize all the entities value for that to false. After that, we use a simple loop to populate the new column with true if they're on the Warriors and false otherwise. We also have the players whose teams were unknown and they get their own color. 
 
-#As you can see from this graph, Golden State has some of the best scorers per minutes played in the league. On the contrary, they also have some of the worst scorers per minutes played (perhaps they're defensive players).
+As you can see from this graph, Golden State has some of the best scorers per minutes played in the league. On the contrary, they also have some of the worst scorers per minutes played (perhaps they're defensive players).
 
 ```{r, warning = FALSE, message = FALSE}
 (NBAStats$isGSW = FALSE)
