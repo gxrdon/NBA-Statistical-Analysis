@@ -97,7 +97,18 @@ correlation
 ```
 As shown by correlation, the average center gets the most rebounds. Since each variable that relates to the other positions are negative. This essentially says, if you are a PG, you are expected to get 377 - 233 rebounds.
 
-Now we're going to move on to the next part of the data science pipeline: hypothesis testing. In this section, we'll make a prediction such as guards tend to score more points and then we will set up a linear model and test whether or not this is true. 
+I'd like to showcase this correlation, as well. To do this, I'll be using a line graph where we plot REB on the Y axis and Mins on the X. There's an obvious correlation between time played and rebounds. The more time - the more possibilities. 
+
+However, this graph will also show the difference between each position by using color in the aes method. This groups by POS and then assigns each a unique color so you can see the correlation between Pos and Min as well as Pos and REB. 
+
+```{r}
+NBAStats %>% 
+  ggplot(aes(x=MIN, y=REB, color=Pos)) + 
+  geom_point() + 
+  geom_smooth(method=lm)
+```
+
+Now we're going to move on to the next part of the data science pipeline: hypothesis testing. In this section, we'll make a prediction such as guards tend to score more points and then we will set up a linear model and test whether or not this is true.
 
 In the first part, we create a linear model of the relationship between points scored and minutes played in a season. The result gives us two values for the formula B0 + B1X where X represents the number of minutes played, -72.85 is the starting interecept and then .4733 is the amount of points that a players scores on average per minute. 
 
@@ -128,4 +139,5 @@ corr_regress %>%
          x = "fitted",
          y = "residual")
 ```
+ 
 
